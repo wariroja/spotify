@@ -3,6 +3,7 @@ import './App.css';
 import SearchBar from "../SeachBar/SearchBar"
 import Playlist from "../Playlist/Playlist"
 import SearchResult from '../SearchResult/SearchResult'
+import Spotify from '../../util/spotify'
 
 class App extends React.Component {
   constructor(props) {
@@ -45,9 +46,9 @@ class App extends React.Component {
     let trackUris = tracks.map(track => track.uri)
 
   }
-
+  // receving objects from reponse.json(object).track(object).items(arr).map({to object})RETURNS ARRAY OF OBJECTS
   search(term){
-    console.log(term)
+    Spotify.search(term).then(searchResults => this.setState({searchResults: searchResults}))
   }
 
 
