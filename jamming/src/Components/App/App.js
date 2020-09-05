@@ -10,8 +10,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       searchResults: [],
-      playlistName: 'My Playlist',
-      playlistTracks:['boy yeah']
+      playlistName: 'New Playlist',
+      playlistTracks:[]
     };
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
@@ -31,7 +31,7 @@ class App extends React.Component {
     // this.state.playlistTracks.filter(removedTrack => removedTrack.id !== track.id)
     let tracks = this.state.playlistTracks
     tracks = tracks.filter(currentTrack => currentTrack.id !== track.id)
-    this.setState({playlistTrack: tracks})
+    this.setState({playlistTracks: tracks})
     }
   
   updatePlaylistName(name){
@@ -42,8 +42,12 @@ class App extends React.Component {
     let tracks = this.state.playlistTracks
     let trackUris = tracks.map(track => track.uri)
     // fulfiling the promise/await the function to update the state. 
-    Spotify.savePlaylist(this.state.playlistName, trackUris )
-    this.setState({playlistName: 'New Playlist',playlistTracks: []})
+    Spotify.savePlaylist(this.state.playlistName, trackUris ).then(()=>{
+    this.setState({
+      playlistName: 'New Playlist',
+      playlistTracks: []
+    })
+  })
     
 
   }

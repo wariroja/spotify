@@ -48,7 +48,7 @@ const Spotify = {
     },
     savePlaylist(name, trackUris){
         if(!name || !trackUris.length){
-            return
+            return Promise.resolve();
         }
         const accessToken = Spotify.getAccessToken()
         const headers = {Authorization: `Bearer ${accessToken}`}
