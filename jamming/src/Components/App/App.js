@@ -44,6 +44,10 @@ class App extends React.Component {
   savePlaylist(){
     let tracks = this.state.playlistTracks
     let trackUris = tracks.map(track => track.uri)
+    // fulfiling the promise/await the function to update the state. 
+    Spotify.savePlaylist(this.state.playlistName, trackUris )
+    this.setState({playlistName: 'New Playlist',playlistTracks: []})
+    
 
   }
   // receving objects from reponse.json(object).track(object).items(arr).map({to object})RETURNS ARRAY OF OBJECTS
