@@ -1,10 +1,10 @@
 let accessToken = ''
 const clientId = 'd6c7d0d3521d41899f01f089a1465d16' // how to hide this from public to see?
-const redirectUri = "http://localhost:3000/"
+const redirectUri = "http://soundsgood.surge.sh"
 const Spotify = {
     getAccessToken(){
         if(accessToken){
-            return token 
+            return accessToken 
         } 
             // check for access token match
             // when typing the following will get the url of the page. 
@@ -12,7 +12,7 @@ const Spotify = {
             // .match is a search that return array of search results. 
         const accessTokenMatch = window.location.href.match(/access_token=([^&]*)/)
         const expiresInMatch = window.location.href.match(/expires_in=([^&]*)/)
-        if (accessTokenMatch && expireInmatch){
+        if (accessTokenMatch && expiresInMatch){
             accessToken = accessTokenMatch[1]
             const expiresIn = Number(expiresInMatch[1])
                 //clearing the url allowing us to grab new url after it expires
@@ -30,16 +30,17 @@ const Spotify = {
             headers: {Authorization: `Bearer ${accessToken}`}
           })
         .then(response => {
+            console.log(response)
             return response.json()
           })
         .then(jsonResponse => {
             if(!jsonResponse.tracks){
                 return [];
-            }
+            } 
             return jsonResponse.tracks.items.map(track => ({
                 id: track.id,
                 name: track.name,
-                artist: track.artist[0].name,
+                artist: track.artists[0].name,
                 album: track.album.name,
                 uri: track.uri
             }))   
@@ -61,7 +62,7 @@ const Spotify = {
                 body: JSON.stringify({name: name})})
                 .then(response => response.json())
                 .then(jsonResponse => {const playlistId =  jsonResponse.id
-                    return fetch(`https://api.spotify.com/v1/users/${userId}playlists/${playlistId}/tracks`, 
+                    return fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`, 
                         {headers: headers,
                          method: 'POST',
                          body: JSON.stringify({uris: trackUris})
